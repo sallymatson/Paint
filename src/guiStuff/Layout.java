@@ -85,6 +85,4 @@ public class Layout extends JFrame implements ActionListener {
         g.fillPolygon( x, y, 3 );
 
     }
-
-
 }
