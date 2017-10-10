@@ -1,53 +1,28 @@
 package guiStuff;
 
 class Triangle implements Shape {
-    private double side1;
-    private double side2;
-    private double side3;
+    private double x[];
+    private double y[];
+
+    private double calcSideLen(double x1, double x2, double y1, double y2){
+        return Math.sqrt(Math.pow(2, x1-x2) + Math.pow(2, y1-y2));
+    }
 
     public double getSide1(){
-        return this.side1;
+        return calcSideLen(x[0], x[1], y[0], y[1]);
     }
 
     public double getSide2(){
-        return this.side2;
+        return calcSideLen(x[0], x[2], y[0], y[2]);
     }
 
     public double getSide3(){
-        return this.side3;
+        return calcSideLen(x[2], x[1], y[2], y[1]);
     }
 
-    private void setSide1(double sz) throws IllegalArgumentException {
-        if (sz < 0) {
-            throw new IllegalArgumentException("guiStuff.Triangle side size can't be less than 0.");
-        }
-        this.side1 = sz;
-    }
-
-    private void setSide2(double sz) throws IllegalArgumentException {
-        if (sz < 0) {
-            throw new IllegalArgumentException("guiStuff.Triangle side size can't be less than 0.");
-        }
-        this.side2 = sz;
-    }
-
-    private void setSide3(double sz) throws IllegalArgumentException {
-        if (sz < 0) {
-            throw new IllegalArgumentException("guiStuff.Triangle side size can't be less than 0.");
-        }
-        this.side3 = sz;
-    }
-
-    public Triangle(double s1, double s2, double s3) throws IllegalArgumentException {
-        // checks to make sure that the longest isn't longer than the two shorter sides added together
-        double max = Math.max(Math.max(s1,s2),s3);
-        if (max * 2 > s1 + s2 + s3){
-            throw new IllegalArgumentException("guiStuff.Triangle side sizes do not form a triangle.");
-        }
-
-        this.setSide1(s1);
-        this.setSide2(s2);
-        this.setSide3(s3);
+    public Triangle(double x1, double y1, double x2, double y2, double x3, double y3) {
+        x = new double[] {x1, x2, x3};
+        y = new double[] {y1, y2, y3};
     }
 
     @Override
