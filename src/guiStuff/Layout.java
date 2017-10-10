@@ -47,7 +47,9 @@ public class Layout extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == lineButton) {
             System.out.println("line");
-            // create line method
+            // call line constructor
+            // takes points from next drag
+            // draws it to the screen
         } else if (e.getSource() == rectangleButton) {
             System.out.println("rect");
             // create rect method
@@ -61,4 +63,28 @@ public class Layout extends JFrame implements ActionListener {
 
         repaint();
     }
+
+    @Override
+    public void paint( Graphics g )
+    {
+        super.paint(g); // call to JFrame paint()
+
+        g.drawLine( 50, 50, 250, 100 );  // xy xy from upper left
+        g.drawRect( 50, 150, 100, 30 );   // x y w h
+        g.drawOval( 50, 150, 100, 300 );
+        g.setColor( Color.pink );
+        g.fillRect(200,200,50,50 );
+        g.drawString("blah blah",300,300);
+
+        int[] x = new int[3];
+        int[] y = new int[3];
+        x[0] = 500; x[1] = 400; x[2] = 350;
+        y[0] = 350; y[1] = 150; y[2] = 400;
+
+        g.setColor( Color.red );
+        g.fillPolygon( x, y, 3 );
+
+    }
+
+
 }

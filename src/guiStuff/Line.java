@@ -1,21 +1,19 @@
 package guiStuff;
 
 class Line implements Shape {
-    private double length;
+    private double[] x1y1;
+    private double[] x2y2;
 
     public double getLength(){
-        return this.length;
+        return Math.sqrt(Math.pow(2, x1y1[0]-x2y2[0]) + Math.pow(2, x1y1[1]-x2y2[1]));
     }
 
-    private void setLength(double ln) throws IllegalArgumentException {
-        if (ln < 0) {
-            throw new IllegalArgumentException("guiStuff.Line length can't be less than 0.");
-        }
-        this.length = ln;
-    }
 
-    public Line(double sz){
-        this.setLength(sz);
+    public Line(double x1, double y1, double x2, double y2){
+        x1y1[0] = x1;
+        x1y1[1] = y1;
+        x2y2[0] = x2;
+        x2y2[1] = y2;
     }
 
     @Override
