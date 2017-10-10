@@ -1,19 +1,16 @@
 package guiStuff;
 
 class Line implements Shape {
-    private double[] x1y1;
-    private double[] x2y2;
+    private double[] x;
+    private double[] y;
 
     public double getLength(){
-        return Math.sqrt(Math.pow(2, x1y1[0]-x2y2[0]) + Math.pow(2, x1y1[1]-x2y2[1]));
+        return Math.sqrt(Math.pow(2, x[0]-x[1]) + Math.pow(2, y[0]-y[1]));
     }
 
-
     public Line(double x1, double y1, double x2, double y2){
-        x1y1[0] = x1;
-        x1y1[1] = y1;
-        x2y2[0] = x2;
-        x2y2[1] = y2;
+        x = new double [] {x1, x2};
+        y = new double [] {y1, y2};
     }
 
     @Override
