@@ -1,22 +1,24 @@
 package guiStuff;
 
+import java.awt.*;
+
 import java.util.Map;
 
 class Rectangle implements Shape {
-    private double x [];
-    private double y [];
+    private int x [];
+    private int y [];
 
-    public double getHeight(){
+    public int getHeight(){
         return Math.abs(y[0] - y[1]);
     }
 
-    public double getWidth(){
+    public int getWidth(){
         return Math.abs(x[0] - x[1]);
     }
 
-    public Rectangle(double x1, double y1, double x2, double y2){
-        x = new double [] {x1, x2};
-        y = new double [] {y1, y2};
+    public Rectangle(int x1, int y1, int x2, int y2){
+        x = new int [] {x1, x2};
+        y = new int [] {y1, y2};
     }
 
     @Override
@@ -27,5 +29,12 @@ class Rectangle implements Shape {
     @Override
     public double getPerimeter(){
         return (this.getHeight() * 2) + (this.getWidth() * 2);
+    }
+
+    @Override
+    public void drawShape(Graphics g) {
+        // TODO: set correct color
+        g.setColor(Color.blue);
+        g.fillRect( x[0], y[0], x[1], y[1] );
     }
 }

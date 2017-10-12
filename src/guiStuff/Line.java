@@ -1,16 +1,18 @@
 package guiStuff;
 
+import java.awt.*;
+
 class Line implements Shape {
-    private double[] x;
-    private double[] y;
+    private int[] x;
+    private int[] y;
 
     public double getLength(){
         return Math.sqrt(Math.pow(2, x[0]-x[1]) + Math.pow(2, y[0]-y[1]));
     }
 
-    public Line(double x1, double y1, double x2, double y2){
-        x = new double [] {x1, x2};
-        y = new double [] {y1, y2};
+    public Line(int x1, int y1, int x2, int y2){
+        x = new int [] {x1, x2};
+        y = new int [] {y1, y2};
     }
 
     @Override
@@ -21,5 +23,12 @@ class Line implements Shape {
     @Override
     public double getPerimeter(){
         return 0;
+    }
+
+    @Override
+    public void drawShape(Graphics g) {
+        // TODO: set correct color
+        g.setColor(Color.red);
+        g.drawLine( x[0], y[0], x[1], y[1] );
     }
 }
