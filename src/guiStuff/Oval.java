@@ -1,10 +1,11 @@
 package guiStuff;
 
+import java.awt.*;
 import java.util.Map;
 
 class Oval implements Shape {
-    private double x[];
-    private double y[];
+    private int x[];
+    private int y[];
 
     public double getRadiusX(){
         return Math.abs(x[0] - x[1]);
@@ -14,9 +15,9 @@ class Oval implements Shape {
         return Math.abs(y[0] - y[1]);
     }
 
-    public Oval(double x1, double y1, double x2, double y2){
-        x = new double[] {x1, x2};
-        y = new double[] {y1, y2};
+    public Oval(int x1, int y1, int x2, int y2){
+        x = new int[] {x1, x2};
+        y = new int[] {y1, y2};
     }
 
     @Override
@@ -29,4 +30,10 @@ class Oval implements Shape {
         return Math.PI * Math.sqrt(2) * (Math.pow(2, this.getRadiusX()) + Math.pow(2, this.getRadiusY()));
     }
 
+    @Override
+    public void drawShape(Graphics g) {
+        // TODO: set correct color
+        g.setColor(Color.green);
+        g.fillOval( x[0], y[0], (int)getRadiusX(), (int)getRadiusY() );
+    }
 }

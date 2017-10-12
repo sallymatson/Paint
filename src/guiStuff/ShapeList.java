@@ -1,5 +1,6 @@
 package guiStuff;
 
+import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -33,6 +34,16 @@ public class ShapeList {
         this.calculateTotalArea();
         this.calculateTotalPerimeter();
         */
+    }
+
+    public void addShape(Shape shape) {
+        sl.add(shape);
+    }
+
+    public void drawShapes(Graphics g) {
+        for (Shape shape : sl) {
+            shape.drawShape(g);
+        }
     }
 
     private void calculateTotalArea(){

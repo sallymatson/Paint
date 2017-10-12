@@ -1,8 +1,10 @@
 package guiStuff;
 
+import java.awt.*;
+
 class Triangle implements Shape {
-    private double x[];
-    private double y[];
+    private int x[];
+    private int y[];
 
     private double calcSideLen(double x1, double x2, double y1, double y2){
         return Math.sqrt(Math.pow(2, x1-x2) + Math.pow(2, y1-y2));
@@ -20,9 +22,9 @@ class Triangle implements Shape {
         return calcSideLen(x[2], x[1], y[2], y[1]);
     }
 
-    public Triangle(double x1, double y1, double x2, double y2, double x3, double y3) {
-        x = new double[] {x1, x2, x3};
-        y = new double[] {y1, y2, y3};
+    public Triangle(int x1, int y1, int x2, int y2, int x3, int y3) {
+        x = new int[] {x1, x2, x3};
+        y = new int[] {y1, y2, y3};
     }
 
     @Override
@@ -34,5 +36,12 @@ class Triangle implements Shape {
     @Override
     public double getPerimeter() {
         return this.getSide1() + this.getSide2() + this.getSide3();
+    }
+
+    @Override
+    public void drawShape(Graphics g) {
+        // TODO: set correct color
+        g.setColor(Color.yellow);
+        g.fillPolygon( x, y, 3 );
     }
 }
