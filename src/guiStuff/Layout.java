@@ -8,11 +8,22 @@ public class Layout extends JFrame implements ActionListener {
 
     JPanel panelShapes;
     JPanel panelDraw;
+    JPanel panelCalculate;
+    
     JButton lineButton;
     JButton ovalButton;
     JButton rectangleButton;
     JButton triangleButton;
-
+    JButton getPerimeterButton;
+    JButton getAreaButton;
+    
+    ShapeList shapeList = new ShapeList();
+    
+    JTextField perimeterTextField;
+    JTextArea perimeterTextArea;
+    JTextField areaTextField;
+    JTextArea areaTextArea;
+    
     public Layout() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Paint");
@@ -22,12 +33,17 @@ public class Layout extends JFrame implements ActionListener {
         ovalButton = new JButton("Oval");
         rectangleButton = new JButton("Rectangle");
         triangleButton = new JButton("Triangle");
+        getPerimeterButton = new JButton("Get Perimeter");
+        getAreaButton = new JButton("Get Area");
+        	
 
         // add listeners:
         lineButton.addActionListener(this);
         ovalButton.addActionListener(this);
         rectangleButton.addActionListener(this);
         triangleButton.addActionListener(this);
+        getPerimeterButton.addActionListener(this);
+        getAreaButton.addActionListener(this);
 
         // panel to display shape names
         panelShapes = new JPanel();
@@ -41,6 +57,58 @@ public class Layout extends JFrame implements ActionListener {
 
         setSize(new Dimension(500, 500));
         setVisible(true);
+        
+        panelCalculate = new JPanel();
+        add(panelCalculate);
+        
+        panelCalculate.setLayout(new BoxLayout(panelCalculate, BoxLayout.Y_AXIS));
+        panelCalculate.add(getPerimeterButton);
+        
+        setSize(new Dimension(500, 500));
+        setVisible(true);
+        
+        perimeterTextField = new JTextField(20);
+        perimeterTextField.setMaximumSize( perimeterTextField.getPreferredSize() );
+        perimeterTextField.addActionListener(this);
+        
+ 
+        perimeterTextArea = new JTextArea(5, 20);
+        perimeterTextArea.setEditable(false);
+        
+        panelCalculate.add(perimeterTextField);
+
+        panelCalculate.add(getAreaButton);
+
+        areaTextField = new JTextField(20);
+        areaTextField.addActionListener(this);
+ 
+        areaTextArea = new JTextArea(5, 20);
+        areaTextArea.setEditable(false);
+        
+        //panelCalculate.add(Box.createVerticalStrut(10));
+
+        setSize(new Dimension(500, 500));
+        setVisible(true);
+        
+//        JScrollPane scrollPane = new JScrollPane(perimeterTextArea);
+//        
+//        //Add Components to this panel.
+//        GridBagConstraints c = new GridBagConstraints();
+//        c.gridwidth = GridBagConstraints.REMAINDER;
+// 
+//        c.fill = GridBagConstraints.HORIZONTAL;
+//        add(perimeterTextField, c);
+// 
+//        c.fill = GridBagConstraints.BOTH;
+//        c.weightx = 1.0;
+//        c.weighty = 1.0;
+//        add(scrollPane, c);
+//        
+//        setSize(new Dimension(500, 500));
+//        setVisible(true);
+//        
+        
+
     }
 
     @Override
@@ -59,7 +127,15 @@ public class Layout extends JFrame implements ActionListener {
         } else if (e.getSource() == ovalButton) {
             System.out.println("oval");
             // create oval method
-        }
+        } else if(e.getSource() == getPerimeterButton) {
+        		System.out.println("Calculating perimeter");
+        		perimeterTextField.setText("perimeter");
+        		//perimeterTextField.selectAll();
+
+        		
+        } else if(e.getSource() == getAreaButton) {
+    			System.out.println("Calculating area");
+    }
 
         repaint();
     }
