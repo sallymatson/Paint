@@ -16,8 +16,8 @@ class Oval implements Shape {
     }
 
     public Oval(int x1, int y1, int x2, int y2){
-        x = new int[] {x1, x2};
-        y = new int[] {y1, y2};
+        x = new int [] {Math.min(x1, x2), Math.max(x1, x2)};
+        y = new int [] {Math.min(y1, y2), Math.max(y1, y2)};
     }
 
     @Override

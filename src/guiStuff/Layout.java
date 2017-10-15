@@ -4,7 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Layout extends JFrame implements ActionListener {
+public class Layout extends JFrame
+        implements ActionListener, MouseListener, MouseMotionListener {
 
     JPanel panelShapes;
     JPanel panelCalculate;
@@ -23,6 +24,13 @@ public class Layout extends JFrame implements ActionListener {
     JTextArea perimeterTextArea;
     JTextField areaTextField;
     JTextArea areaTextArea;
+
+    int downX, downY; // where the mouse is when button is pressed
+    int mouseX, mouseY; // mouse last seen at
+    int upX, upY;
+    int trix1, trix2, triy1, triy2;
+
+    String mouseMode = "none";
     
     public Layout() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -36,6 +44,9 @@ public class Layout extends JFrame implements ActionListener {
         setupPanelCalculate();
 
         setupPanelCanvas();
+
+        addMouseListener(this);
+        addMouseMotionListener(this);
 
         // window settings
         setSize(new Dimension(800, 600));
@@ -104,26 +115,71 @@ public class Layout extends JFrame implements ActionListener {
         add(panelDraw);
     }
 
+    private void draw() {
+        if (mouseMode == "oval"){
+            shapeList.addShape(new Oval(downX, downY, mouseX, mouseY));
+            mouseMode = "none";
+        } else if (mouseMode == "line"){
+            shapeList.addShape(new Line(downX, downY, mouseX, mouseY));
+            mouseMode = "none";
+        } else if (mouseMode == "rectangle"){
+            shapeList.addShape(new Rectangle(downX, downY, mouseX, mouseY));
+            mouseMode = "none";
+        } else if (mouseMode == "triangle"){
+            trix1 = mouseX;
+            triy1 = mouseY;
+            mouseMode = "triangle2";
+        } else if (mouseMode == "triangle2"){
+            trix2 = mouseX;
+            triy2 = mouseY;
+            mouseMode = "triangle3";
+        } else if (mouseMode == "triangle3"){
+            shapeList.addShape(new Triangle(trix1, triy1, trix2, triy2, mouseX, mouseY));
+            mouseMode = "none";
+        }
+
+    }
+
+    //Mouse Listener events taken from in class examples (snappy)
+    // MouseListener methods (5 of them)
+    @Override public void mouseEntered ( MouseEvent m ) {}
+    @Override public void mouseExited  ( MouseEvent m ) {}
+
+    // record position of mouse when mouse button is pressed
+    @Override public void mousePressed ( MouseEvent m )
+    {
+        mouseX = downX = m.getX();
+        mouseY = downY = m.getY();
+    }
+    @Override public void mouseReleased( MouseEvent m )
+    {
+        mouseX = upX = m.getX();
+        mouseY = upY = m.getY();
+        draw();
+        repaint();
+    }
+    @Override public void mouseClicked ( MouseEvent m ) {}
+
+    // MouseMotionListener methods (just 2 needed)
+    // when the mouse is dragged, update the mouseXY position
+    @Override public void mouseDragged ( MouseEvent m )
+    {
+        mouseX = m.getX();
+        mouseY = m.getY();
+    }
+
+    @Override public void mouseMoved   ( MouseEvent m ) {}
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == lineButton) {
-            System.out.println("line");
-            shapeList.addShape(new Line(panelDraw.getX() + 50, panelDraw.getY() + 50, panelDraw.getX() + 250, panelDraw.getY() + 100));
-            // call line constructor
-            // takes points from next drag
-            // draws it to the screen
+            mouseMode = "line";
         } else if (e.getSource() == rectangleButton) {
-            System.out.println("rect");
-            shapeList.addShape(new Rectangle(panelDraw.getX() + 50, panelDraw.getY() + 150, panelDraw.getX() + 100, panelDraw.getY() + 30));
-            // create rect method
+            mouseMode = "rectangle";
         } else if (e.getSource() == triangleButton) {
-            System.out.println("tri");
-            shapeList.addShape(new Triangle(panelDraw.getX() + 50, panelDraw.getY() + 150, panelDraw.getX() + 100, panelDraw.getY() + 30, panelDraw.getX() + 200, panelDraw.getY() + 40));
-            // create triangle method
+            mouseMode = "triangle";
         } else if (e.getSource() == ovalButton) {
-            System.out.println("oval");
-            shapeList.addShape(new Oval(panelDraw.getX() + 50, panelDraw.getY() + 50, panelDraw.getX() + 250, panelDraw.getY() + 100));
-            // create oval method
+            mouseMode = "oval";
         } else if(e.getSource() == getPerimeterButton) {
             System.out.println("Calculating perimeter");
             perimeterTextField.setText("perimeter");
