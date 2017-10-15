@@ -61,11 +61,13 @@ public class ShapeList {
     }
 
     public double getTotalArea() {
+    		calculateTotalArea();
         return totalArea;
     }
 
     public double getTotalPerimeter() {
-        return totalPerimeter;
+    		calculateTotalPerimeter();
+        return this.totalPerimeter;
     }
 
 }
