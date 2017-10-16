@@ -47,6 +47,8 @@ public class Layout extends JFrame
         setupPanelCalculate();
 
         setupPanelCanvas();
+        setupPanelCanvas();
+
 
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -91,19 +93,26 @@ public class Layout extends JFrame
         panelCalculate = new JPanel();
         add(panelCalculate);
 
-        panelCalculate.setLayout(new BoxLayout(panelCalculate, BoxLayout.Y_AXIS));
+       panelCalculate.setLayout(new BoxLayout(panelCalculate, BoxLayout.Y_AXIS));
+       panelCalculate.setBorder(BorderFactory.createEmptyBorder(70, 0, 0, 0));
+
         panelCalculate.add(getPerimeterButton);
+       	getPerimeterButton.setAlignmentX(CENTER_ALIGNMENT);
+       	getPerimeterButton.setAlignmentY(CENTER_ALIGNMENT);
 
         perimeterTextField = new JTextField(20);
         perimeterTextField.setMaximumSize( perimeterTextField.getPreferredSize() );
         perimeterTextField.addActionListener(this);
-
         perimeterTextArea = new JTextArea(5, 20);
         perimeterTextField.setEditable(false);
-
+        
         panelCalculate.add(perimeterTextField);
+        perimeterTextField.setAlignmentX(CENTER_ALIGNMENT);
+        perimeterTextField.setAlignmentY(CENTER_ALIGNMENT);
 
         panelCalculate.add(getAreaButton);
+      	getAreaButton.setAlignmentX(CENTER_ALIGNMENT);
+       	getAreaButton.setAlignmentY(CENTER_ALIGNMENT);
 
         areaTextField = new JTextField(20);
         areaTextField.setMaximumSize(areaTextField.getPreferredSize() );
@@ -112,15 +121,18 @@ public class Layout extends JFrame
         areaTextArea = new JTextArea(5, 20);
         areaTextField.setEditable(false);
         panelCalculate.add(areaTextField);
+        areaTextField.setAlignmentX(CENTER_ALIGNMENT);
+        areaTextField.setAlignmentY(CENTER_ALIGNMENT);
 
-        
-        
+
+        panelCalculate.setBackground(Color.orange);
         
     }
 
     private void setupPanelCanvas() {
         // panel to draw shapes
         panelDraw = new JPanel();
+        panelDraw.setBackground(Color.white);
         add(panelDraw);
     }
 
@@ -167,7 +179,7 @@ public class Layout extends JFrame
         mouseX = upX = m.getX();
         mouseY = upY = m.getY();
   
-       
+     
         draw();
        
         repaint();
