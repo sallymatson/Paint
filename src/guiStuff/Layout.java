@@ -3,13 +3,15 @@ package guiStuff;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 
-public class Layout extends JFrame implements ActionListener {
+public class Layout extends JFrame
+        implements ActionListener, MouseListener, MouseMotionListener{
 
     JPanel panelShapes;
     JPanel panelCalculate;
     JPanel panelDraw;
-
+ 
     JButton lineButton;
     JButton ovalButton;
     JButton rectangleButton;
@@ -24,6 +26,15 @@ public class Layout extends JFrame implements ActionListener {
     JTextField areaTextField;
     JTextArea areaTextArea;
     
+    Color color;
+
+    int downX, downY; // where the mouse is when button is pressed
+    int mouseX, mouseY; // mouse last seen at
+    int upX, upY;
+    int trix1, trix2, triy1, triy2;
+
+    String mouseMode = "none";
+    
     public Layout() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Paint");
@@ -36,6 +47,9 @@ public class Layout extends JFrame implements ActionListener {
         setupPanelCalculate();
 
         setupPanelCanvas();
+
+        addMouseListener(this);
+        addMouseMotionListener(this);
 
         // window settings
         setSize(new Dimension(800, 600));
@@ -85,17 +99,23 @@ public class Layout extends JFrame implements ActionListener {
         perimeterTextField.addActionListener(this);
 
         perimeterTextArea = new JTextArea(5, 20);
-        perimeterTextArea.setEditable(false);
+        perimeterTextField.setEditable(false);
 
         panelCalculate.add(perimeterTextField);
 
         panelCalculate.add(getAreaButton);
 
         areaTextField = new JTextField(20);
+        areaTextField.setMaximumSize(areaTextField.getPreferredSize() );
         areaTextField.addActionListener(this);
 
         areaTextArea = new JTextArea(5, 20);
-        areaTextArea.setEditable(false);
+        areaTextField.setEditable(false);
+        panelCalculate.add(areaTextField);
+
+        
+        
+        
     }
 
     private void setupPanelCanvas() {
@@ -104,32 +124,99 @@ public class Layout extends JFrame implements ActionListener {
         add(panelDraw);
     }
 
+    private void draw() {
+    	 	
+         if (mouseMode == "oval"){
+            shapeList.addShape(new Oval(downX, downY, mouseX, mouseY, color));
+            mouseMode = "none";
+        } else if (mouseMode == "line"){
+            shapeList.addShape(new Line(downX, downY, mouseX, mouseY, color));
+
+            mouseMode = "none";
+        } else if (mouseMode == "rectangle"){
+            shapeList.addShape(new Rectangle(downX, downY, mouseX, mouseY, color));
+            mouseMode = "none";
+        } else if (mouseMode == "triangle"){
+            trix1 = mouseX;
+            triy1 = mouseY;
+            mouseMode = "triangle2";
+        } else if (mouseMode == "triangle2"){
+            trix2 = mouseX;
+            triy2 = mouseY;
+            mouseMode = "triangle3";
+        } else if (mouseMode == "triangle3"){
+            shapeList.addShape(new Triangle(trix1, triy1, trix2, triy2, mouseX, mouseY, color));
+            mouseMode = "none";
+        }
+
+    }
+
+    //Mouse Listener events taken from in class examples (snappy)
+    // MouseListener methods (5 of them)
+    @Override public void mouseEntered ( MouseEvent m ) {}
+    @Override public void mouseExited  ( MouseEvent m ) {}
+
+    // record position of mouse when mouse button is pressed
+    @Override public void mousePressed ( MouseEvent m )
+    {
+        mouseX = downX = m.getX();
+        mouseY = downY = m.getY();
+    }
+    @Override public void mouseReleased( MouseEvent m )
+    {
+        mouseX = upX = m.getX();
+        mouseY = upY = m.getY();
+  
+       
+        draw();
+       
+        repaint();
+    }
+    @Override public void mouseClicked ( MouseEvent m ) {}
+
+    // MouseMotionListener methods (just 2 needed)
+    // when the mouse is dragged, update the mouseXY position
+    @Override public void mouseDragged ( MouseEvent m )
+    {
+        mouseX = m.getX();
+        mouseY = m.getY();
+    }
+
+    @Override public void mouseMoved   ( MouseEvent m ) {}
+
     @Override
     public void actionPerformed(ActionEvent e) {
+    		
+        
         if (e.getSource() == lineButton) {
-            System.out.println("line");
-            shapeList.addShape(new Line(panelDraw.getX() + 50, panelDraw.getY() + 50, panelDraw.getX() + 250, panelDraw.getY() + 100));
-            // call line constructor
-            // takes points from next drag
-            // draws it to the screen
+            mouseMode = "line";
+            JColorChooser jcc = new JColorChooser();
+            color = jcc.showDialog(null, "Please select color", Color.red);
+            
         } else if (e.getSource() == rectangleButton) {
-            System.out.println("rect");
-            shapeList.addShape(new Rectangle(panelDraw.getX() + 50, panelDraw.getY() + 150, panelDraw.getX() + 100, panelDraw.getY() + 30));
-            // create rect method
+            mouseMode = "rectangle";
+            JColorChooser jcc = new JColorChooser();
+            color = jcc.showDialog(null, "Please select color", Color.red);
+          
         } else if (e.getSource() == triangleButton) {
-            System.out.println("tri");
-            shapeList.addShape(new Triangle(panelDraw.getX() + 50, panelDraw.getY() + 150, panelDraw.getX() + 100, panelDraw.getY() + 30, panelDraw.getX() + 200, panelDraw.getY() + 40));
-            // create triangle method
+            mouseMode = "triangle";
+            JColorChooser jcc = new JColorChooser();
+            color = jcc.showDialog(null, "Please select color", Color.red);
+           
         } else if (e.getSource() == ovalButton) {
-            System.out.println("oval");
-            shapeList.addShape(new Oval(panelDraw.getX() + 50, panelDraw.getY() + 50, panelDraw.getX() + 250, panelDraw.getY() + 100));
-            // create oval method
+            mouseMode = "oval";
+            JColorChooser jcc = new JColorChooser();
+            color = jcc.showDialog(null, "Please select color", Color.red);
+            
         } else if(e.getSource() == getPerimeterButton) {
             System.out.println("Calculating perimeter");
-            perimeterTextField.setText("perimeter");
-            //perimeterTextField.selectAll();
+            String totalPerimeter = Double.toString(shapeList.getTotalPerimeter());     
+            perimeterTextField.setText(totalPerimeter);
+
         } else if(e.getSource() == getAreaButton) {
             System.out.println("Calculating area");
+            String totalArea = Double.toString(shapeList.getTotalArea());
+            areaTextField.setText(totalArea);
         }
 
         repaint();
