@@ -40,7 +40,7 @@ class Rectangle implements Shape {
     
     @Override
     public void drawShape(Graphics g) {
-    		g.setColor(getColor());
+        g.setColor(getColor());
         g.fillRect( x[0], y[0], getWidth(), getHeight() );
     }
 }

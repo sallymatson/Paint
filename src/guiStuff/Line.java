@@ -34,7 +34,6 @@ class Line implements Shape {
     
     @Override
     public void drawShape(Graphics g) {
-        // TODO: set correct color
         g.setColor(getColor());
         g.drawLine( x[0], y[0], x[1], y[1] );
     }
