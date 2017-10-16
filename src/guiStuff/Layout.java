@@ -159,6 +159,9 @@ public class Layout extends JFrame
     {
         mouseX = downX = m.getX();
         mouseY = downY = m.getY();
+        if (mouseMode == MouseMode.selected || mouseMode == MouseMode.none) {
+            trySelect(m.getX(), m.getY());
+        }
     }
 
     @Override public void mouseReleased( MouseEvent m )
@@ -197,9 +200,7 @@ public class Layout extends JFrame
         }
     }
 
-    @Override public void mouseClicked( MouseEvent m ) {
-        trySelect(m.getX(), m.getY());
-    }
+    @Override public void mouseClicked( MouseEvent m ) {}
 
     // MouseMotionListener methods (just 2 needed)
     // when the mouse is dragged, update the mouseXY position
