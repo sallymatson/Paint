@@ -26,6 +26,18 @@ public class ShapeList {
         }
     }
 
+    public Shape trySelect(int x, int y) {
+        // for all shapes in shapeList, starting with the last shape
+        // aka the latest added, aka the shapes at the top/lowest depth
+        for (int i = sl.size() -1; i >= 0; i--) {
+            // check if (x, y) is inside shape
+            if (sl.get(i).contains(x, y)) {
+                return sl.get(i);
+            }
+        }
+        return null;
+    }
+
     private void calculateTotalArea(){
         this.totalArea = 0.0;
         for (Shape shape : sl){

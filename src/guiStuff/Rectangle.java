@@ -8,6 +8,7 @@ class Rectangle implements Shape {
     private int x [];
     private int y [];
     private Color color;
+    private boolean selected;
 
     public int getHeight(){
         return Math.abs(y[0] - y[1]);
@@ -21,6 +22,16 @@ class Rectangle implements Shape {
         x = new int [] {Math.min(x1, x2), Math.max(x1, x2)};
         y = new int [] {Math.min(y1, y2), Math.max(y1, y2)};
         color = c;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     @Override
@@ -42,5 +53,21 @@ class Rectangle implements Shape {
     public void drawShape(Graphics g) {
         g.setColor(getColor());
         g.fillRect( x[0], y[0], getWidth(), getHeight() );
+        if (selected) {
+            // draw adjust handles
+            g.setColor(Color.black);
+            g.drawOval(x[0] - adjustHandleRadius, y[0] - adjustHandleRadius, adjustHandleRadius * 2, adjustHandleRadius * 2);
+            g.drawOval(x[1] - adjustHandleRadius, y[0] - adjustHandleRadius, adjustHandleRadius * 2, adjustHandleRadius * 2);
+            g.drawOval(x[1] - adjustHandleRadius, y[1] - adjustHandleRadius, adjustHandleRadius * 2, adjustHandleRadius * 2);
+            g.drawOval(x[0] - adjustHandleRadius, y[1] - adjustHandleRadius, adjustHandleRadius * 2, adjustHandleRadius * 2);
+        }
+    }
+
+    @Override
+    public boolean contains(int x, int y) {
+        int[] xPoints = { this.x[0], this.x[1], this.x[1], this.x[0] };
+        int[] yPoints = { this.y[0], this.y[0], this.y[1], this.y[1] };
+        Polygon poly = new Polygon(xPoints, yPoints, 4);
+        return poly.contains(new Point(x, y));
     }
 }

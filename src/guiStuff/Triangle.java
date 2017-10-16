@@ -6,16 +6,15 @@ class Triangle implements Shape {
     private int x[];
     private int y[];
     private Color color;
+    private boolean selected;
 
     private double calcSideLen(double x1, double x2, double y1, double y2){
         //return Math.sqrt(Math.pow(2, x1-x2) + Math.pow(2, y1-y2));
         return Math.sqrt(Math.pow(x2-x1 , 2) + Math.pow(y2-y1, 2));
-
     }
 
     public double getSide1(){
         return calcSideLen(x[0], x[1], y[0], y[1]);
-
     }
 
     public double getSide2(){
@@ -30,6 +29,16 @@ class Triangle implements Shape {
         x = new int[] {x1, x2, x3};
         y = new int[] {y1, y2, y3};
         color = c;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     @Override
@@ -52,5 +61,18 @@ class Triangle implements Shape {
     public void drawShape(Graphics g) {
         g.setColor(getColor());
         g.fillPolygon( x, y, 3 );
+        if (selected) {
+            // draw adjust handles
+            g.setColor(Color.black);
+            g.drawOval(x[0] - adjustHandleRadius, y[0] - adjustHandleRadius, adjustHandleRadius * 2, adjustHandleRadius * 2);
+            g.drawOval(x[1] - adjustHandleRadius, y[1] - adjustHandleRadius, adjustHandleRadius * 2, adjustHandleRadius * 2);
+            g.drawOval(x[2] - adjustHandleRadius, y[2] - adjustHandleRadius, adjustHandleRadius * 2, adjustHandleRadius * 2);
+        }
+    }
+
+    @Override
+    public boolean contains(int x, int y) {
+        Polygon poly = new Polygon(this.x, this.y, 3);
+        return poly.contains(new Point(x, y));
     }
 }

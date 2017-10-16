@@ -33,28 +33,30 @@ public class Layout extends JFrame
     int upX, upY;
     int trix1, trix2, triy1, triy2;
 
+    Shape selectedShape;
+
     enum MouseMode
     {
-        none, oval, line, rectangle, triangle, triangle2, triangle3
+        none, oval, line, rectangle, triangle, triangle2, triangle3, selected
     }
 
     MouseMode mouseMode = MouseMode.none;
     
     public Layout() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Paint");
         setLayout(new BorderLayout());
 
         setupButtons();
         setupPanelShapes();
         setupPanelCalculate();
-        setupPanelCanvas();
+        setupPanelDraw();
 
         addMouseListener(this);
         addMouseMotionListener(this);
 
         // window settings
-        setSize(new Dimension(800, 600));
+        setSize(new Dimension(640, 480));
         setVisible(true);
     }
 
@@ -79,7 +81,7 @@ public class Layout extends JFrame
     private void setupPanelShapes() {
         // panel to display shape names
         panelShapes = new JPanel();
-        panelShapes.setBackground(Color.orange);
+        // panelShapes.setBackground(Color.orange);
         add(panelShapes, BorderLayout.PAGE_START);
         panelShapes.setLayout(new GridLayout(1, 4));
         panelShapes.add(lineButton);
@@ -116,7 +118,7 @@ public class Layout extends JFrame
         panelCalculate.add(areaTextField);
     }
 
-    private void setupPanelCanvas() {
+    private void setupPanelDraw() {
         // panel to draw shapes
         panelDraw = new JPanel();
         add(panelDraw, BorderLayout.CENTER);
@@ -163,13 +165,41 @@ public class Layout extends JFrame
     {
         mouseX = upX = m.getX();
         mouseY = upY = m.getY();
-       
+        // TODO: supposed to keep the shapes within the panelDraw,
+        // but for some reason it's not working
+        mouseX = Math.max(mouseX, panelDraw.getX());
+        mouseX = Math.min(mouseX, panelDraw.getX() + panelDraw.getWidth());
+        mouseY = Math.max(mouseY, panelDraw.getY());
+        mouseY = Math.min(mouseY, panelDraw.getY() + panelDraw.getHeight());
+
         draw();
-       
         repaint();
     }
 
-    @Override public void mouseClicked( MouseEvent m ) {}
+    private void trySelect(int selectX, int selectY) {
+        if (mouseMode == MouseMode.none || mouseMode == MouseMode.selected) {
+            Shape shape = shapeList.trySelect(selectX, selectY);
+            if (shape != null) {
+                if (selectedShape != null) {
+                    selectedShape.setSelected(false);
+                    selectedShape = null;
+                }
+                // select that shape
+                shape.setSelected(true);
+                // set mousemode to selected
+                mouseMode = MouseMode.selected;
+                selectedShape = shape;
+            } else if (mouseMode == MouseMode.selected) {
+                mouseMode = MouseMode.none;
+                selectedShape.setSelected(false);
+                selectedShape = null;
+            }
+        }
+    }
+
+    @Override public void mouseClicked( MouseEvent m ) {
+        trySelect(m.getX(), m.getY());
+    }
 
     // MouseMotionListener methods (just 2 needed)
     // when the mouse is dragged, update the mouseXY position
@@ -213,7 +243,6 @@ public class Layout extends JFrame
     public void paint( Graphics g )
     {
         super.paint(g); // call to JFrame paint()
-
         shapeList.drawShapes(g);
     }
 }
