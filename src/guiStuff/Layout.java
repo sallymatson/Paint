@@ -43,7 +43,7 @@ public class Layout extends JFrame
     public Layout() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Paint");
-        setLayout(new GridLayout(2, 1));
+        setLayout(new BorderLayout());
 
         setupButtons();
         setupPanelShapes();
@@ -80,7 +80,7 @@ public class Layout extends JFrame
         // panel to display shape names
         panelShapes = new JPanel();
         panelShapes.setBackground(Color.orange);
-        add(panelShapes);
+        add(panelShapes, BorderLayout.PAGE_START);
         panelShapes.setLayout(new GridLayout(1, 4));
         panelShapes.add(lineButton);
         panelShapes.add(rectangleButton);
@@ -91,9 +91,9 @@ public class Layout extends JFrame
     private void setupPanelCalculate() {
         // panel to calculate and display area and perimeter
         panelCalculate = new JPanel();
-        add(panelCalculate);
+        add(panelCalculate, BorderLayout.PAGE_END);
 
-        panelCalculate.setLayout(new BoxLayout(panelCalculate, BoxLayout.Y_AXIS));
+        panelCalculate.setLayout(new BoxLayout(panelCalculate, BoxLayout.X_AXIS));
         panelCalculate.add(getPerimeterButton);
 
         perimeterTextField = new JTextField(20);
@@ -119,7 +119,7 @@ public class Layout extends JFrame
     private void setupPanelCanvas() {
         // panel to draw shapes
         panelDraw = new JPanel();
-        add(panelDraw);
+        add(panelDraw, BorderLayout.CENTER);
         panelDraw.setBackground(Color.white);
     }
 
