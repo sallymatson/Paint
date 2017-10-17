@@ -173,6 +173,7 @@ public class Layout extends JFrame
     private void adjust() {
         if (mouseMode == MouseMode.adjust) {
             selectedShape.adjust(upX, upY);
+            // TODO: maybe select just-created shape, even if there is a currently selected one?
             mouseMode = MouseMode.selected;
         }
     }

@@ -1,12 +1,14 @@
 package guiStuff;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 
 class Triangle implements Shape {
     private int x[];
     private int y[];
     private Color color;
     private boolean selected;
+    private int handleBeingAdjusted;
 
     private double calcSideLen(double x1, double x2, double y1, double y2) {
         //return Math.sqrt(Math.pow(2, x1-x2) + Math.pow(2, y1-y2));
@@ -78,12 +80,28 @@ class Triangle implements Shape {
 
     @Override
     public boolean adjustHandlesContain(int x, int y) {
+        Ellipse2D handle1 = new Ellipse2D.Double(this.x[0] - adjustHandleRadius, this.y[0] - adjustHandleRadius, adjustHandleRadius * 2, adjustHandleRadius * 2);
+        Ellipse2D handle2 = new Ellipse2D.Double(this.x[1] - adjustHandleRadius, this.y[1] - adjustHandleRadius, adjustHandleRadius * 2, adjustHandleRadius * 2);
+        Ellipse2D handle3 = new Ellipse2D.Double(this.x[2] - adjustHandleRadius, this.y[2] - adjustHandleRadius, adjustHandleRadius * 2, adjustHandleRadius * 2);
+        // if one of the adjust handles does contain the clicked point,
+        // figure out which one and keep track that we are adjusting that corner
+        if (handle1.contains(x, y)) {
+            handleBeingAdjusted = 1;
+            return true;
+        } else if (handle2.contains(x, y)) {
+            handleBeingAdjusted = 2;
+            return true;
+        } else if (handle3.contains(x, y)) {
+            handleBeingAdjusted = 3;
+            return true;
+        }
         return false;
-        // if it does contain, figure out which one and keep track that we are adjusting that corner
     }
 
     @Override
     public void adjust(int x, int y) {
-
+        this.x[handleBeingAdjusted - 1] = x;
+        this.y[handleBeingAdjusted - 1] = y;
+        handleBeingAdjusted = 0;
     }
 }
