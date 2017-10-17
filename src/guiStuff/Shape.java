@@ -11,4 +11,6 @@ interface Shape {
     public boolean contains(int x, int y);
     public boolean isSelected();
     public void setSelected(boolean selected);
+    public boolean adjustHandlesContain(int x, int y);
+    public void adjust(int x, int y);
 }

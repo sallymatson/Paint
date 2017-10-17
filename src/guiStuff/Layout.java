@@ -37,7 +37,7 @@ public class Layout extends JFrame
 
     enum MouseMode
     {
-        none, oval, line, rectangle, triangle, triangle2, triangle3, selected
+        none, oval, line, rectangle, triangle, triangle2, triangle3, selected, adjust
     }
 
     MouseMode mouseMode = MouseMode.none;
@@ -126,57 +126,27 @@ public class Layout extends JFrame
     }
 
     private void draw() {
-        if (mouseMode == MouseMode.oval){
+        if (mouseMode == MouseMode.oval) {
             shapeList.addShape(new Oval(downX, downY, mouseX, mouseY, color));
             mouseMode = MouseMode.none;
-        } else if (mouseMode == MouseMode.line){
+        } else if (mouseMode == MouseMode.line) {
             shapeList.addShape(new Line(downX, downY, mouseX, mouseY, color));
             mouseMode = MouseMode.none;
-        } else if (mouseMode == MouseMode.rectangle){
+        } else if (mouseMode == MouseMode.rectangle) {
             shapeList.addShape(new Rectangle(downX, downY, mouseX, mouseY, color));
             mouseMode = MouseMode.none;
-        } else if (mouseMode == MouseMode.triangle){
+        } else if (mouseMode == MouseMode.triangle) {
             trix1 = mouseX;
             triy1 = mouseY;
             mouseMode = MouseMode.triangle2;
-        } else if (mouseMode == MouseMode.triangle2){
+        } else if (mouseMode == MouseMode.triangle2) {
             trix2 = mouseX;
             triy2 = mouseY;
             mouseMode = MouseMode.triangle3;
-        } else if (mouseMode == MouseMode.triangle3){
+        } else if (mouseMode == MouseMode.triangle3) {
             shapeList.addShape(new Triangle(trix1, triy1, trix2, triy2, mouseX, mouseY, color));
             mouseMode = MouseMode.none;
         }
-    }
-
-    //Mouse Listener events taken from in class examples (snappy)
-    // MouseListener methods (5 of them)
-    @Override public void mouseEntered( MouseEvent m ) {}
-    @Override public void mouseExited( MouseEvent m ) {}
-
-    // record position of mouse when mouse button is pressed
-    @Override public void mousePressed( MouseEvent m )
-    {
-        mouseX = downX = m.getX();
-        mouseY = downY = m.getY();
-        if (mouseMode == MouseMode.selected || mouseMode == MouseMode.none) {
-            trySelect(m.getX(), m.getY());
-        }
-    }
-
-    @Override public void mouseReleased( MouseEvent m )
-    {
-        mouseX = upX = m.getX();
-        mouseY = upY = m.getY();
-        // TODO: supposed to keep the shapes within the panelDraw,
-        // but for some reason it's not working
-        mouseX = Math.max(mouseX, panelDraw.getX());
-        mouseX = Math.min(mouseX, panelDraw.getX() + panelDraw.getWidth());
-        mouseY = Math.max(mouseY, panelDraw.getY());
-        mouseY = Math.min(mouseY, panelDraw.getY() + panelDraw.getHeight());
-
-        draw();
-        repaint();
     }
 
     private void trySelect(int selectX, int selectY) {
@@ -200,7 +170,42 @@ public class Layout extends JFrame
         }
     }
 
+    private void adjust() {
+        if (mouseMode == MouseMode.adjust) {
+            selectedShape.adjust(upX, upY);
+            mouseMode = MouseMode.selected;
+        }
+    }
+
+    // Mouse Listener events taken from in class examples (snappy)
+    // MouseListener methods (5 of them)
+    @Override public void mouseEntered( MouseEvent m ) {}
+    @Override public void mouseExited( MouseEvent m ) {}
     @Override public void mouseClicked( MouseEvent m ) {}
+    // record position of mouse when mouse button is pressed
+    @Override public void mousePressed( MouseEvent m )
+    {
+        mouseX = downX = m.getX();
+        mouseY = downY = m.getY();
+        if (mouseMode == MouseMode.selected) {
+            if (selectedShape.adjustHandlesContain(mouseX, mouseY)) {
+                mouseMode = MouseMode.adjust;
+                return;
+            }
+        }
+        if (mouseMode == MouseMode.selected || mouseMode == MouseMode.none) {
+            trySelect(m.getX(), m.getY());
+        }
+    }
+    @Override public void mouseReleased( MouseEvent m )
+    {
+        mouseX = upX = m.getX();
+        mouseY = upY = m.getY();
+
+        draw();
+        adjust();
+        repaint();
+    }
 
     // MouseMotionListener methods (just 2 needed)
     // when the mouse is dragged, update the mouseXY position
@@ -209,7 +214,6 @@ public class Layout extends JFrame
         mouseX = m.getX();
         mouseY = m.getY();
     }
-
     @Override public void mouseMoved( MouseEvent m ) {}
 
     @Override

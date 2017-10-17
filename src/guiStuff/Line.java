@@ -1,14 +1,16 @@
 package guiStuff;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 
 class Line implements Shape {
     private int[] x;
     private int[] y;
     private Color color;
     private boolean selected;
+    private int handleBeingAdjusted;
 
-    public double getLength(){
+    public double getLength() {
         return Math.sqrt(Math.pow(2, x[0]-x[1]) + Math.pow(2, y[0]-y[1]));
     }
 
@@ -66,5 +68,28 @@ class Line implements Shape {
         int[] yPoints = { (int)(this.y[0] + dx), (int)(this.y[0] - dx), (int)(this.y[1] - dx), (int)(this.y[1] + dx) };
         Polygon poly = new Polygon(xPoints, yPoints, 4);
         return poly.contains(new Point(x, y));
+    }
+
+    @Override
+    public boolean adjustHandlesContain(int x, int y) {
+        Ellipse2D handle1 = new Ellipse2D.Double(this.x[0] - adjustHandleRadius, this.y[0] - adjustHandleRadius, adjustHandleRadius * 2, adjustHandleRadius * 2);
+        Ellipse2D handle2 = new Ellipse2D.Double(this.x[1] - adjustHandleRadius, this.y[1] - adjustHandleRadius, adjustHandleRadius * 2, adjustHandleRadius * 2);
+        // if one of the adjust handles does contain the clicked point,
+        // figure out which one and keep track that we are adjusting that corner
+        if (handle1.contains(x, y)) {
+            handleBeingAdjusted = 1;
+            return true;
+        } else if (handle2.contains(x, y)) {
+            handleBeingAdjusted = 2;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void adjust(int x, int y) {
+        this.x[handleBeingAdjusted - 1] = x;
+        this.y[handleBeingAdjusted - 1] = y;
+        handleBeingAdjusted = 0;
     }
 }

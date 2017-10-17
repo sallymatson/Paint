@@ -9,16 +9,17 @@ class Oval implements Shape {
     private int y[];
     private Color color;
     private boolean selected;
+    private int handleBeingAdjusted;
 
-    public double getRadiusX(){
+    public double getRadiusX() {
         return Math.abs(x[0] - x[1]);
     }
 
-    public double getRadiusY(){
+    public double getRadiusY() {
         return Math.abs(y[0] - y[1]);
     }
 
-    public Oval(int x1, int y1, int x2, int y2, Color c){
+    public Oval(int x1, int y1, int x2, int y2, Color c) {
         x = new int [] { Math.min(x1, x2), Math.max(x1, x2) };
         y = new int [] { Math.min(y1, y2), Math.max(y1, y2) };
         color = c;
@@ -66,5 +67,35 @@ class Oval implements Shape {
     public boolean contains(int x, int y) {
         Ellipse2D oval = new Ellipse2D.Double(this.x[0], this.y[0], getRadiusX(), getRadiusY());
         return oval.contains(x, y);
+    }
+
+    @Override
+    public boolean adjustHandlesContain(int x, int y) {
+        Ellipse2D handle1 = new Ellipse2D.Double();
+        Ellipse2D handle2 = new Ellipse2D.Double();
+        Ellipse2D handle3 = new Ellipse2D.Double();
+        Ellipse2D handle4 = new Ellipse2D.Double();
+        // if one of the adjust handles does contain the clicked point,
+        // figure out which one and keep track that we are adjusting that corner
+        if (handle1.contains(x, y)) {
+            handleBeingAdjusted = 1;
+            return true;
+        } else if (handle2.contains(x, y)) {
+            handleBeingAdjusted = 2;
+            return true;
+        } else if (handle3.contains(x, y)) {
+            handleBeingAdjusted = 3;
+            return true;
+        } else if (handle4.contains(x, y)) {
+            handleBeingAdjusted = 4;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void adjust(int x, int y) {
+
+        handleBeingAdjusted = 0;
     }
 }

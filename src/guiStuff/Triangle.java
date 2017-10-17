@@ -8,20 +8,20 @@ class Triangle implements Shape {
     private Color color;
     private boolean selected;
 
-    private double calcSideLen(double x1, double x2, double y1, double y2){
+    private double calcSideLen(double x1, double x2, double y1, double y2) {
         //return Math.sqrt(Math.pow(2, x1-x2) + Math.pow(2, y1-y2));
         return Math.sqrt(Math.pow(x2-x1 , 2) + Math.pow(y2-y1, 2));
     }
 
-    public double getSide1(){
+    public double getSide1() {
         return calcSideLen(x[0], x[1], y[0], y[1]);
     }
 
-    public double getSide2(){
+    public double getSide2() {
         return calcSideLen(x[0], x[2], y[0], y[2]);
     }
 
-    public double getSide3(){
+    public double getSide3() {
         return calcSideLen(x[2], x[1], y[2], y[1]);
     }
 
@@ -74,5 +74,16 @@ class Triangle implements Shape {
     public boolean contains(int x, int y) {
         Polygon poly = new Polygon(this.x, this.y, 3);
         return poly.contains(new Point(x, y));
+    }
+
+    @Override
+    public boolean adjustHandlesContain(int x, int y) {
+        return false;
+        // if it does contain, figure out which one and keep track that we are adjusting that corner
+    }
+
+    @Override
+    public void adjust(int x, int y) {
+
     }
 }

@@ -10,15 +10,15 @@ class Rectangle implements Shape {
     private Color color;
     private boolean selected;
 
-    public int getHeight(){
+    public int getHeight() {
         return Math.abs(y[0] - y[1]);
     }
 
-    public int getWidth(){
+    public int getWidth() {
         return Math.abs(x[0] - x[1]);
     }
 
-    public Rectangle(int x1, int y1, int x2, int y2, Color c){
+    public Rectangle(int x1, int y1, int x2, int y2, Color c) {
         x = new int [] {Math.min(x1, x2), Math.max(x1, x2)};
         y = new int [] {Math.min(y1, y2), Math.max(y1, y2)};
         color = c;
@@ -69,5 +69,16 @@ class Rectangle implements Shape {
         int[] yPoints = { this.y[0], this.y[0], this.y[1], this.y[1] };
         Polygon poly = new Polygon(xPoints, yPoints, 4);
         return poly.contains(new Point(x, y));
+    }
+
+    @Override
+    public boolean adjustHandlesContain(int x, int y) {
+        return false;
+        // if it does contain, figure out which one and keep track that we are adjusting that corner
+    }
+
+    @Override
+    public void adjust(int x, int y) {
+
     }
 }
