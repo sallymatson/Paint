@@ -12,38 +12,30 @@ public class ShapeList {
     private double totalArea;
     private double totalPerimeter;
 
-    void prepareShapes(String filename) {
-        /*
-        try {
-
-        }
-        catch (NumberFormatException e) {
-            System.out.println(e.toString());
-        }
-        catch (IllegalArgumentException e) {
-            System.out.println(e.toString());
-        }
-        catch (IOException exception){
-            System.out.println(exception.toString());
-        }
-        catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println(e.toString());
-        }
-
-        // add to total Area and total Perimeter
-        this.calculateTotalArea();
-        this.calculateTotalPerimeter();
-        */
-    }
-
     public void addShape(Shape shape) {
         sl.add(shape);
+
+        // add to total Area and total Perimeter
+        calculateTotalArea();
+        calculateTotalPerimeter();
     }
 
     public void drawShapes(Graphics g) {
         for (Shape shape : sl) {
             shape.drawShape(g);
         }
+    }
+
+    public Shape trySelect(int x, int y) {
+        // for all shapes in shapeList, starting with the last shape
+        // aka the latest added, aka the shapes at the top/lowest depth
+        for (int i = sl.size() -1; i >= 0; i--) {
+            // check if (x, y) is inside shape
+            if (sl.get(i).contains(x, y)) {
+                return sl.get(i);
+            }
+        }
+        return null;
     }
 
     private void calculateTotalArea(){
