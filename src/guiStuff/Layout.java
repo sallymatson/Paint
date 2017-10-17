@@ -99,7 +99,6 @@ public class Layout extends JFrame
     private void setupPanelShapes() {
         // panel to display shape names
         panelShapes = new JPanel();
-        // TODO: panelShapes.setBackground(Color.orange);
         add(panelShapes, BorderLayout.PAGE_START);
 
         panelShapes.setLayout(new GridLayout(1, 4));
@@ -138,8 +137,6 @@ public class Layout extends JFrame
         panelCalculate.add(areaTextField);
 
         areaTextArea = new JTextArea(5, 20);
-
-        // TODO: panelCalculate.setBackground(Color.orange);
     }
 
     private void setupPanelDraw() {
@@ -153,25 +150,30 @@ public class Layout extends JFrame
 
     private void draw() {
         if (mouseMode == MouseMode.oval) {
-            shapeList.addShape(new Oval(checkX(downX), checkY(downY), checkX(mouseX), checkY(mouseY), color));
-            mouseMode = MouseMode.none;
-        } else if (mouseMode == MouseMode.line) {
-            shapeList.addShape(new Line(checkX(downX), checkY(downY), checkX(mouseX), checkY(mouseY), color));
-            mouseMode = MouseMode.none;
-        } else if (mouseMode == MouseMode.rectangle) {
-            shapeList.addShape(new Rectangle(checkX(downX), checkY(downY), checkX(mouseX), checkY(mouseY), color));
-            mouseMode = MouseMode.none;
-        } else if (mouseMode == MouseMode.triangle) {
+            Shape oval = shapeList.addShape(new Oval(checkX(downX), checkY(downY), checkX(mouseX), checkY(mouseY), color));
+            selectShape(oval);
+        }
+        else if (mouseMode == MouseMode.line) {
+            Shape line = shapeList.addShape(new Line(checkX(downX), checkY(downY), checkX(mouseX), checkY(mouseY), color));
+            selectShape(line);
+        }
+        else if (mouseMode == MouseMode.rectangle) {
+            Shape rect = shapeList.addShape(new Rectangle(checkX(downX), checkY(downY), checkX(mouseX), checkY(mouseY), color));
+            selectShape(rect);
+        }
+        else if (mouseMode == MouseMode.triangle) {
             trix1 = checkX(mouseX);
             triy1 = checkY(mouseY);
             mouseMode = MouseMode.triangle2;
-        } else if (mouseMode == MouseMode.triangle2) {
+        }
+        else if (mouseMode == MouseMode.triangle2) {
             trix2 = checkX(mouseX);
             triy2 = checkY(mouseY);
             mouseMode = MouseMode.triangle3;
-        } else if (mouseMode == MouseMode.triangle3) {
-            shapeList.addShape(new Triangle(trix1, triy1, trix2, triy2, checkX(mouseX), checkY(mouseY), color));
-            mouseMode = MouseMode.none;
+        }
+        else if (mouseMode == MouseMode.triangle3) {
+            Shape triangle = shapeList.addShape(new Triangle(trix1, triy1, trix2, triy2, checkX(mouseX), checkY(mouseY), color));
+            selectShape(triangle);
         }
     }
 
@@ -179,15 +181,7 @@ public class Layout extends JFrame
         if (mouseMode == MouseMode.none || mouseMode == MouseMode.selected) {
             Shape shape = shapeList.trySelect(selectX, selectY);
             if (shape != null) {
-                if (selectedShape != null) {
-                    selectedShape.setSelected(false);
-                    selectedShape = null;
-                }
-                // select that shape
-                shape.setSelected(true);
-                // set mousemode to selected
-                mouseMode = MouseMode.selected;
-                selectedShape = shape;
+                selectShape(shape);
             } else if (mouseMode == MouseMode.selected) {
                 mouseMode = MouseMode.none;
                 selectedShape.setSelected(false);
@@ -196,10 +190,21 @@ public class Layout extends JFrame
         }
     }
 
+    private void selectShape(Shape shape) {
+        if (selectedShape != null) {
+            selectedShape.setSelected(false);
+            selectedShape = null;
+        }
+        // select that shape
+        shape.setSelected(true);
+        // set mousemode to selected
+        mouseMode = MouseMode.selected;
+        selectedShape = shape;
+    }
+
     private void adjust() {
         if (mouseMode == MouseMode.adjust) {
             selectedShape.adjust(checkX(upX), checkY(upY));
-            // TODO: maybe select just-created shape, even if there is a currently selected one?
             mouseMode = MouseMode.selected;
         }
     }

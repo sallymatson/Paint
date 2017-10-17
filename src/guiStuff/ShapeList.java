@@ -12,12 +12,14 @@ public class ShapeList {
     private double totalArea;
     private double totalPerimeter;
 
-    public void addShape(Shape shape) {
+    public Shape addShape(Shape shape) {
         sl.add(shape);
 
         // add to total Area and total Perimeter
         calculateTotalArea();
         calculateTotalPerimeter();
+
+        return shape;
     }
 
     public void drawShapes(Graphics g) {
