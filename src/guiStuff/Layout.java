@@ -81,9 +81,12 @@ public class Layout extends JFrame
     private void setupPanelShapes() {
         // panel to display shape names
         panelShapes = new JPanel();
-        // panelShapes.setBackground(Color.orange);
+        // TODO: panelShapes.setBackground(Color.orange);
         add(panelShapes, BorderLayout.PAGE_START);
+
         panelShapes.setLayout(new GridLayout(1, 4));
+        panelShapes.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
+
         panelShapes.add(lineButton);
         panelShapes.add(rectangleButton);
         panelShapes.add(triangleButton);
@@ -96,33 +99,38 @@ public class Layout extends JFrame
         add(panelCalculate, BorderLayout.PAGE_END);
 
         panelCalculate.setLayout(new BoxLayout(panelCalculate, BoxLayout.X_AXIS));
+        panelCalculate.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
+
         panelCalculate.add(getPerimeterButton);
 
         perimeterTextField = new JTextField(20);
         perimeterTextField.setMaximumSize( perimeterTextField.getPreferredSize() );
         perimeterTextField.addActionListener(this);
+        perimeterTextField.setEditable(false);
+        panelCalculate.add(perimeterTextField);
 
         perimeterTextArea = new JTextArea(5, 20);
-        perimeterTextField.setEditable(false);
-
-        panelCalculate.add(perimeterTextField);
 
         panelCalculate.add(getAreaButton);
 
         areaTextField = new JTextField(20);
         areaTextField.setMaximumSize(areaTextField.getPreferredSize() );
         areaTextField.addActionListener(this);
-
-        areaTextArea = new JTextArea(5, 20);
         areaTextField.setEditable(false);
         panelCalculate.add(areaTextField);
+
+        areaTextArea = new JTextArea(5, 20);
+
+        // TODO: panelCalculate.setBackground(Color.orange);
     }
 
     private void setupPanelDraw() {
         // panel to draw shapes
         panelDraw = new JPanel();
+
         add(panelDraw, BorderLayout.CENTER);
         panelDraw.setBackground(Color.white);
+        add(panelDraw);
     }
 
     private void draw() {
