@@ -95,7 +95,6 @@ class Oval implements Shape {
 
     @Override
     public void adjust(int x, int y) {
-        // TODO: breaks when u flip the shape over
         switch (handleBeingAdjusted) {
             case 1:
                 this.x[0] = x;
@@ -114,6 +113,8 @@ class Oval implements Shape {
                 this.y[1] = y;
                 break;
         }
+        this.x = new int [] { Math.min(this.x[0], this.x[1]), Math.max(this.x[0], this.x[1]) };
+        this.y = new int [] { Math.min(this.y[0], this.y[1]), Math.max(this.y[0], this.y[1]) };
         handleBeingAdjusted = 0;
     }
 }

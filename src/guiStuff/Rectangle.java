@@ -21,8 +21,8 @@ class Rectangle implements Shape {
     }
 
     public Rectangle(int x1, int y1, int x2, int y2, Color c) {
-        x = new int [] {Math.min(x1, x2), Math.max(x1, x2)};
-        y = new int [] {Math.min(y1, y2), Math.max(y1, y2)};
+        x = new int [] { Math.min(x1, x2), Math.max(x1, x2) };
+        y = new int [] { Math.min(y1, y2), Math.max(y1, y2) };
         color = c;
     }
 
@@ -118,6 +118,8 @@ class Rectangle implements Shape {
                 this.y[1] = y;
                 break;
         }
+        this.x = new int [] { Math.min(this.x[0], this.x[1]), Math.max(this.x[0], this.x[1]) };
+        this.y = new int [] { Math.min(this.y[0], this.y[1]), Math.max(this.y[0], this.y[1]) };
         handleBeingAdjusted = 0;
     }
 }
