@@ -108,7 +108,6 @@ class Rectangle implements Shape {
 
     @Override
     public void adjust(int x, int y) {
-        // TODO: breaks when u flip the shape over
         switch (handleBeingAdjusted) {
             case 1:
                 this.x[0] = x;
