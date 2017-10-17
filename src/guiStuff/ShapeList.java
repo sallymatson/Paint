@@ -12,29 +12,6 @@ public class ShapeList {
     private double totalArea;
     private double totalPerimeter;
 
-    void prepareShapes(String filename) {
-        /*
-        try {
-
-        }
-        catch (NumberFormatException e) {
-            System.out.println(e.toString());
-        }
-        catch (IllegalArgumentException e) {
-            System.out.println(e.toString());
-        }
-        catch (IOException exception){
-            System.out.println(exception.toString());
-        }
-        catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println(e.toString());
-        }
-
-        // add to total Area and total Perimeter
-        this.calculateTotalArea();
-        this.calculateTotalPerimeter();
-        */
-    }
 
     public void addShape(Shape shape) {
         sl.add(shape);
