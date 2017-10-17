@@ -52,3 +52,4 @@ fabric.properties
 *.docx
 *.iml
 *.DS_Store
+src/META-INF/

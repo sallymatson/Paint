@@ -1,3 +1,12 @@
+//
+//  Created by:
+//      ad1229  Aissatou Diallo
+//      pj202   Peter Johnston
+//      sam439  Sally Matson
+//
+//  Disclosures are in Layout.java
+//
+
 package guiStuff;
 
 public class Paint {

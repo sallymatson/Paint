@@ -1,3 +1,20 @@
+//
+//  Created by:
+//      ad1229  Aissatou Diallo
+//      pj202   Peter Johnston
+//      sam439  Sally Matson
+//
+//  Disclosures:
+//      In Layout.java, the pattern of instantiating JFrames, JPanels,
+//      and JButtons and assigning them Layouts, as well as the
+//      ActionListener, MouseListener, and MouseMotionListener
+//      patterns, were taken from the sample code files provided on Piazza.
+//
+//      In ShapeList.java and Shape.java, as well as each of the individual
+//      shape types, the basic class structure and some of the methods were
+//      adapted from Sally Matson's FunWithShapes code.
+//
+
 package guiStuff;
 
 import java.awt.*;
